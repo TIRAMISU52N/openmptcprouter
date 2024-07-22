@@ -1,10 +1,10 @@
-name: Makefile CI
+name: Makefile.sh
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "develop" ]
+    branches: [ "master" ]
 
 jobs:
   build:
@@ -14,14 +14,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: configure
-      run: ./configure
-
     - name: Install dependencies
-      run: make
+      run: apt-get install busybox curl rsync build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler wget tar file lvm
 
     - name: Run check
-      run: make check
+      run: OMR_TARGET="x86_64" OMR_FEED_SRC="master" OMR_KERNEL="6.1" ./build.sh
 
-    - name: Run distcheck
-      run: make distcheck
